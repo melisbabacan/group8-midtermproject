@@ -1,6 +1,15 @@
 from flask import Flask
+import psycopg2
  
 app = Flask(__name__)
+
+def get_connection():
+    return psycopg2.connect(
+        host="localhost",
+        database="cities",
+        user="postgres",
+        password="password"
+    )
  
 @app.route("/hello")
 
