@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 import os
 import psycopg2
  
@@ -16,13 +16,27 @@ def get_connection():
         password=DB_PASSWORD
     )
  
+favorite_cities = []
+ 
 @app.route("/hello")
-
 def hello():
-
-    return "Hello! Welcome to Favorite City App"
+    return "Welcome to Favorite City App"
+ 
+@app.route("/add/<city>")
+def add_city(city):
+    favorite_cities.append(city)
+    return f"{city} added!"
+ 
+@app.route("/cities")
+def cities():
+    return jsonify(favorite_cities)
+ 
+@app.route("/delete/<city>")
+def delete_city(city):
+    if city in favorite_cities:
+        favorite_cities.remove(city)
+        return f"{city} deleted!"
+    return "City not found"
  
 if __name__ == "__main__":
-
     app.run(debug=True)
- 
