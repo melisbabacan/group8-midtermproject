@@ -39,6 +39,7 @@ def get_connection():
 def home():
     return "Favorite city app is running.."
 
+
 @app.route("/hello")
 def hello():
     return "Welcome to Favorite City App"
