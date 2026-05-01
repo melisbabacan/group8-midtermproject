@@ -3,8 +3,7 @@ name: Build, Push, and Deploy Container to Azure App Service
 on:
   push:
     branches:
-      - main
-      - step1/**
+      - feature/api
   workflow_dispatch:
 
 jobs:
