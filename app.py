@@ -1,19 +1,31 @@
 from flask import Flask, jsonify
-import os
 import psycopg2
+
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
  
-app = Flask(__name__)
-DB_HOST = os.getenv("DB_HOST")
-DB_NAME = os.getenv("DB_NAME")
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
+KEY_VAULT_NAME = "group8kv"
+KEY_VAULT_URL = f"https://{KEY_VAULT_NAME}.vault.azure.net/"
+
+credential = DefaultAzureCredential()
+secret_client = SecretClient(
+    vault_url=KEY_VAULT_URL,
+    credential=credential
+)
+
+DB_HOST = secret_client.get_secret("DB-HOST").value
+DB_NAME = secret_client.get_secret("DB-NAME").value
+DB_USER = secret_client.get_secret("DB-USER").value
+DB_PASSWORD = secret_client.get_secret("DB-PASSWORD").value
 
 def get_connection():
     return psycopg2.connect(
         host=DB_HOST,
         database=DB_NAME,
         user=DB_USER,
-        password=DB_PASSWORD
+        password=DB_PASSWORD,
+        port=5432,
+        sslmode="require"
     )
  
 favorite_cities = []
