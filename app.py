@@ -3,6 +3,7 @@ import psycopg2
 
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
+app = Flask(__name__)
  
 KEY_VAULT_NAME = "group8kv"
 KEY_VAULT_URL = f"https://{KEY_VAULT_NAME}.vault.azure.net/"
